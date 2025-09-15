@@ -1,0 +1,44 @@
+Identifier: com.github.jamestpotts.download.NordVPN
+
+Description: Downloads both Intel and Silicon versions of NordPass to be built into a universal installer package
+
+Input:
+  NAME: NordPass
+  URL: https://nordpass.com/download/macos/
+
+Process:
+
+  - Processor: URLTextSearcher
+    Arguments:
+      url: "%URL%"
+      re_pattern: https://downloads.npass.app/mac
+      result_output_var_name: url_prefix
+
+  - Processor: URLDownloader
+    Arguments:
+      url: "%url_prefix%/%NAME%.dmg"
+      filename: "%NAME%_Intel.dmg"
+
+  - Processor: URLDownloader
+    Arguments:
+      url: "%url_prefix%/arm/%NAME%.dmg"
+      filename: "%NAME%_Silicon.dmg"
+
+  - Processor: EndOfCheckPhase
+
+  - Processor: FileFinder
+    Arguments:
+      pattern: "%RECIPE_CACHE_DIR%/downloads/%NAME%_Silicon.dmg"
+
+  - Processor: CodeSignatureVerifier
+    Arguments:
+      input_path: "%found_filename%/%NAME%.app"
+      requirement: 
+
+  - Processor: PlistReader
+    Arguments:
+      info_path: "%found_filename%/%NAME%.app/Contents/Info.plist"
+      plist_keys: 
+        CFBundleShortVersionString: bundle_version
+        CFBundleIdentifier: bundle_id
+        CFBundleName: bundle_name
