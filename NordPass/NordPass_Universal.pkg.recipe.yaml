@@ -1,5 +1,5 @@
-Identifier: com.github.jamestpotts.pkg.NordVPN
-ParentRecipe: com.github.jamestpotts.download.NordVPN
+Identifier: com.github.jamestpotts.pkg.NordPass
+ParentRecipe: com.github.jamestpotts.download.NordPass
 
 Description: Downloads both Intel and Silicon versions of NordPass and builds them into a universal installer package
 
@@ -69,7 +69,7 @@ Process:
             mode: "0775"
             path: Applications/%bundle_name%.app
             user: root
-        id: "%bundle_id%.intel"
+        id: "%bundle_id%.silicon"
         options: purge_ds_store
         pkgname: "%bundle_name%_Silicon-%bundle_version%"
         pkgroot: "%RECIPE_CACHE_DIR%/Silicon"
