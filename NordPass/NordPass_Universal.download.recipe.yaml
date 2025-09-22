@@ -32,8 +32,8 @@ Process:
 
   - Processor: CodeSignatureVerifier
     Arguments:
-      input_path: "%found_filename%/%NAME%.app"
-      requirement: 
+      input_path: "%found_filename%/NordPass.app"
+      requirement: anchor apple generic and certificate leaf[subject.OU] = W5W395V82Y or anchor apple generic and certificate leaf[subject.OU] = XSY9C6M6C5
 
   - Processor: PlistReader
     Arguments:
