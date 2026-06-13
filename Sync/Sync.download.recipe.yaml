@@ -1,0 +1,33 @@
+Description: Downloads Sync to be built into an installer package
+Identifier: com.github.jamestpotts-recipes.download.Sync
+ 
+Input:
+  NAME: Sync
+
+Process:
+  - Processor: URLTextSearcher
+    Arguments:
+      url: "https://www.sync.com"
+      re_pattern: "https://www10.sync.com/install/"
+
+  - Processor: URLTextSearcher
+    Arguments:
+      url: "%match%"
+      re_pattern: \"(https://.*.dmg)\"
+
+  - Processor: URLDownloader
+    Arguments:
+      url: "%match%"
+
+  - Processor: PlistReader
+    Arguments:
+      info_path: "%pathname%/%NAME%.app"
+      plist_keys:
+        CFBundleName: bundle_name
+        CFBundleIdentifier: bundle_id
+        CFBundleShortVersionString: bundle_version
+
+  - Processor: CodeSignatureVerifier
+    Arguments:
+      input_path: "%pathname%/%NAME%.app"
+      requirement: anchor apple generic and identifier "com.sync.desktop" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "7QR39CMJ3W")

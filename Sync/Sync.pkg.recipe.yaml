@@ -1,0 +1,12 @@
+Description: Downloads Sync to be built into an installer package
+Identifier: com.github.jamestpotts-recipes.pkg.Sync
+ParentRecipe: com.github.jamestpotts-recipes.download.Sync
+ 
+Input:
+  NAME: Sync
+
+Process:
+  - Processor: AppPkgCreator
+    Arguments:
+      app_path: "%pathname%/%NAME%.app"
+      pkg_path: "%RECIPE_CACHE_DIR%/%bundle_name%-%bundle_version%.pkg"
